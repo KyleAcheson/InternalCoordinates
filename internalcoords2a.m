@@ -12,12 +12,13 @@ end
 
 d = D(:); % flatten distance matrix
 
-Nabla=symcart(natom);          
-R(1,:) = Nabla(1:3); % define symbolic cartesian vectors for each of the three atoms
-R(2,:) = Nabla(4:6);
-R(3,:) = Nabla(7:9);
-
-        
+Nabla=symcart(natom);  % symbolic nabla
+c = 0;
+for i=1:3:3*natom % sort nabla into symbolic cartesian indexes for natoms
+    c = c + 1;
+    R(c,:) = Nabla(i:i+2);
+end
+       
 B = sym(zeros(natom^2, 3*natom)); % init symbolic B matrix (derivative of flattened distance mat. wrt cartesian coordinates)
 BB = zeros(natom^2, 3*natom); % init gradient matrix for storing numerical values of evaluated analytical elements of symbolic B
 [Nsq, tN] = size(B);  % rows of B/BB corrospond to elements of flattened distance matrix (natom^2 rows)
